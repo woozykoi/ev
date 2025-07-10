@@ -1,0 +1,86 @@
+#user-create {
+    $input-border-radius: 4px;
+
+    & > div {
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        margin: 0 auto;
+        max-width: 400px;
+        padding: 24px;
+    }
+
+    & .fields {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+
+        & .field {
+            align-items: center;
+            display: flex;
+            gap: 12px;
+
+            label {
+                flex: 1;
+            }
+
+            input, select {
+                border: 1px solid #ccc;
+                border-radius: $input-border-radius;
+                flex: 2;
+                padding: 6px;
+            }
+        }
+
+        & .field-roles {
+            align-items: flex-start;
+            display: flex;
+            gap: 12px;
+
+            & > label {
+                flex: 1;
+                margin-top: 4px;
+            }
+
+            & > div {
+                display: flex;
+                flex: 2;
+                flex-direction: column;
+                gap: 4px
+            }
+
+            label {
+                align-items: center;
+                display: flex;
+                gap: 6px;
+            }
+
+            input {
+                accent-color: #007bff;
+            }
+        }
+    }
+
+    & .actions {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+        margin-top: 24px;
+
+        & .button-default-style {
+            border: none;
+            border-radius: $input-border-radius;
+            padding: 8px 16px;
+        }
+
+        & button[type='reset'] {
+            @extend .button-default-style;
+            background: #eee;
+        }
+
+        & button[type='submit'] {
+            @extend .button-default-style;
+            background: #007bff;
+            color: #fff;
+        }
+    }
+}

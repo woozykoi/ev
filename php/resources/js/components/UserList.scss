@@ -1,0 +1,47 @@
+#user-list {
+    & h2 {
+        margin-top: 24px;
+    }
+
+    & .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin: 16px 0;
+
+        & label {
+            align-items: center;
+            display: flex;
+            gap: 4px;
+        }
+    }
+
+    & table {
+        border-collapse: collapse;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        margin-top: 16px;
+        width: 100%;
+
+        & th {
+            background: #f5f5f5;
+            border-bottom: 2px solid #e0e0e0;
+            font-weight: 600;
+            padding: 10px 8px;
+            text-align: left;
+        }
+
+        & .user td {
+            background: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 8px;
+        }
+
+        & .no-users td {
+            background: #fafafa;
+            color: #888;
+            font-style: italic;
+            padding: 8px;
+            text-align: center;
+        }
+    }
+}

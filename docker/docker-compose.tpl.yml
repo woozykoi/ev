@@ -1,0 +1,75 @@
+version: "3.8"
+
+networks:
+  __BASE_SERVICE_NAME__-network:
+    driver: bridge
+
+volumes:
+  php-fpm-sock:
+  mysqld-sock:
+
+services:
+  __BASE_SERVICE_NAME__-mysql:
+    image: "__DOCKER_IMAGE_MYSQL__"
+    volumes:
+      - __MYSQL_PATH__:/var/lib/mysql
+      - __LOGS_MYSQL_PATH__/mysqld.log:/var/log/mysqld.log
+      - mysqld-sock:/var/run/mysqld/
+    user: "${USER_ID}:${GROUP_ID}"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=app
+      - MYSQL_PASSWORD=app
+    ports:
+      - "__DOCKER_PORT_MYSQL__:3306"
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+    restart: unless-stopped
+    networks:
+      __BASE_SERVICE_NAME__-network:
+        aliases:
+          - db
+
+  __BASE_SERVICE_NAME__-php:
+    image: "__DOCKER_IMAGE_PHP__"
+    volumes:
+      - __PHP_PATH__:/var/www/html
+      - __LOGS_PHP_PATH__:/var/log
+      - php-fpm-sock:/var/run/php/
+      - mysqld-sock:/var/run/mysqld/
+    ports:
+      - "__DOCKER_PORT_PHP__:9000"
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+    restart: unless-stopped
+    depends_on:
+      - __BASE_SERVICE_NAME__-mysql
+    networks:
+      __BASE_SERVICE_NAME__-network:
+        aliases:
+          - php
+
+  __BASE_SERVICE_NAME__-apache:
+    image: "__DOCKER_IMAGE_APACHE__"
+    volumes:
+      - __PHP_PATH__:/var/www/html
+      - __LOGS_APACHE_PATH__:/usr/local/apache2/logs
+      - php-fpm-sock:/var/run/php/
+    ports:
+      - "__DOCKER_PORT_APACHE__:80"
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+    restart: unless-stopped
+    depends_on:
+      - __BASE_SERVICE_NAME__-php
+    networks:
+      - __BASE_SERVICE_NAME__-network
